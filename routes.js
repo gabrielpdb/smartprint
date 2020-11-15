@@ -26,6 +26,10 @@ routes.get('/items/:id', items.show)
 
 routes.post('/items', items.post)
 
+routes.put('/items', items.put)
+
+routes.delete('/items', items.delete)
+
 /* KITS */
 
 routes.get('/kits', function (req, res) {

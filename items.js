@@ -3,7 +3,7 @@ const data = require('./data.json')
 
 //show
 exports.show = function (req, res) {
-    const {id} = req.params
+    const { id } = req.params
 
     const foundItem = data.items.find(function (item) {
         return item.id == id
@@ -30,7 +30,7 @@ exports.post = function (req, res) {
         }
     }
 
-    const {description} = req.body
+    const { description } = req.body
 
     const created_at = Date.now()
     const id = Number(data.items.length + 1)
@@ -63,5 +63,50 @@ exports.edit = function (req, res) {
         ...foundItem,
     }
 
-    return res.render('items/edit', {item})
+    return res.render('items/edit', { item })
+}
+
+//put
+exports.put = function (req, res) {
+    const { id } = req.body
+    let index = 0
+
+    const foundItem = data.items.find(function (item, foundIndex) {
+        if (id == item.id) {
+            index = foundIndex
+            return true
+        }
+    })
+
+    if (!foundItem) return res.send('Instructor not found!')
+
+    const item = {
+        ...foundItem,
+        ...req.body,
+    }
+
+    data.items[index] = item
+
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), function (err) {
+        if (err) return res.send("Write Error!")
+
+        return res.redirect(`/items/${id}`)
+    })
+}
+
+//delete
+exports.delete = function (req, res) {
+    const { id } = req.body
+
+    const filteredItems = data.items.filter(function (item) {
+        return item.id != id
+    })
+
+    data.items = filteredItems
+
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), function (err) {
+        if (err) return res.send('Write file error!')
+
+        return res.redirect('/items')
+    })
 }

@@ -3,8 +3,10 @@ const express = require('express')
 // Chamar o Nunjucks
 const nunjucks = require('nunjucks')
 // Chamar as rotas do "routes.js"
-// Chamar as rotas do "routes.js"
 const routes = require('./routes')
+// Chamar o method override
+const methodOverride = require('method-override')
+
 // Criar o servidor
 const server = express()
 
@@ -13,6 +15,9 @@ server.use(express.urlencoded({ extended: true }))
 
 // Arquivos estáticos da pasta public
 server.use(express.static('public'))
+
+// O express passa a usar o method override
+server.use(methodOverride('_method'))
 
 // O servidor passa a usar as rotas aqui
 server.use(routes)

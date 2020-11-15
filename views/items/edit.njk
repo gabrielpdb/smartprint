@@ -1,17 +1,24 @@
 {% extends "layout.njk" %}
 
 {% block content %}
-    <section class="details">
-        <form class="card" method="POST" action="/items">
-
+    <div class="card">
+        <section class="details">
             <h3>Editar Item</h3>
 
-            {% include "items/fields.njk" %}
+            <form method="POST" action="/items?_method=PUT">
 
-            <input type="hidden" name="id" value="{{item.id}}">
+                {% include "items/fields.njk" %}
 
-        </form>
+                <input type="hidden" name="id" value="{{item.id}}">
 
-        <form action=""></form>
-    </section>
+            </form>
+
+            <form action="/items?_method=DELETE" id="form-delete" method="post">
+                <input type="hidden" name="id" value="{{item.id}}">
+
+                <button type="submit">Deletar</button>
+            </form>
+        </section>
+    </div>
+
 {% endblock content %}
