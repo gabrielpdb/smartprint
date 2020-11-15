@@ -1,13 +1,17 @@
 {% extends "layout.njk" %}
 
 {% block content %}
-    <form class="card" method="POST" action="/items">
-        <section class="details">
+    <section class="details">
+        <form class="card" method="POST" action="/items">
 
             <h3>Editar Item</h3>
 
             {% include "items/fields.njk" %}
 
-        </section>
-    </form>
+            <input type="hidden" name="id" value="{{item.id}}">
+
+        </form>
+
+        <form action=""></form>
+    </section>
 {% endblock content %}
