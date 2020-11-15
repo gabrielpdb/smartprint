@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    {% block head %}
+
+    <title>Smartprint</title>
+
+    {% endblock %}
+
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="links">
+            <a href="/" class="active">Home</a>
+            <a href="/stock">Estoque</a>
+            <a href="/items">Itens</a>
+            <a href="/kits">Kits</a>
+            <a href="/orders">Pedidos</a>
+            <a href="/clients">Clientes</a>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+</body>
+
+</html>

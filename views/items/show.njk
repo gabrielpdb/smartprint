@@ -1,0 +1,23 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+    <div class="card">
+        <section class="details">
+
+            <h3>Detalhes</h3>
+
+            <div class="item">
+                <div>Item</div>
+                <div>{{item.description}}</div>
+            </div>
+
+            <div class="item">
+                <div>Criado em</div>
+                <div>{{item.created_at}}</div>
+            </div>
+
+            <a href="/items/{{item.id}}/edit" class="button">Editar</a>
+
+        </section>
+    </div>
+{% endblock content %}

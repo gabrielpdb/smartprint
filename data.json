@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "description": "adesivo",
+      "created_at": 1605379183001
+    },
+    {
+      "id": 2,
+      "description": "adesivo2",
+      "created_at": 1605379198265
+    },
+    {
+      "id": 3,
+      "description": "adesivo2, agora 3",
+      "created_at": 1605380152846
+    },
+    {
+      "id": 4,
+      "description": "fgs",
+      "created_at": 1605380244645
+    }
+  ]
+}
