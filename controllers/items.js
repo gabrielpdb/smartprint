@@ -1,5 +1,10 @@
 const fs = require('fs')
-const data = require('./data.json')
+const data = require('../data.json')
+
+//index
+exports.index = function (req, res) {
+    return res.render('items/index')
+}
 
 //show
 exports.show = function (req, res) {
@@ -21,6 +26,11 @@ exports.show = function (req, res) {
 }
 
 //create
+exports.create = function (req, res) {
+    return res.render('items/create')
+}
+
+//post
 exports.post = function (req, res) {
     const keys = Object.keys(req.body)
 

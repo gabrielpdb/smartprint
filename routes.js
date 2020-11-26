@@ -1,6 +1,10 @@
 const express = require('express')
 const routes = express.Router()
-const items = require('./items')
+const items = require('./controllers/items')
+const clients = require('./controllers/clients')
+const kits = require('./controllers/kits')
+const orders = require('./controllers/orders')
+const stock = require('./controllers/stock')
 
 routes.get('/', function(req, res) {
     return res.redirect('/home')
@@ -12,22 +16,12 @@ routes.get('/home', function (req, res) {
 
 /* ITEMS */
 
-routes.get('/items', function (req, res) {
-    return res.render('items/index')
-})
-
-routes.get('/items/create', function (req, res) {
-    return res.render('items/create')
-})
-
+routes.get('/items', items.index)
+routes.get('/items/create', items.create)
 routes.get('/items/:id/edit', items.edit)
-
 routes.get('/items/:id', items.show)
-
 routes.post('/items', items.post)
-
 routes.put('/items', items.put)
-
 routes.delete('/items', items.delete)
 
 /* KITS */

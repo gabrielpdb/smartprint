@@ -1,31 +1,66 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+    <head>
 
-    {% block head %}
+        {% block head %}
 
-    <title>Smartprint</title>
+            <title>Smartprint</title>
 
-    {% endblock %}
+        {% endblock %}
 
-    <link rel="stylesheet" href="/styles.css">
-</head>
+        <link rel="stylesheet" href="/styles.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
 
-<body>
-    <header>
-        <div class="links">
-            <a href="/" class="active">Home</a>
-            <a href="/stock">Estoque</a>
-            <a href="/items">Itens</a>
-            <a href="/kits">Kits</a>
-            <a href="/orders">Pedidos</a>
-            <a href="/clients">Clientes</a>
-        </div>
-    </header>
+    <body>
+        <header>
+            <img src="/assets/logo.svg" alt="">
+            <div class="links">
+                <div class="link">
+                    <a href="/home">
+                        <i class="material-icons">home</i>
+                        Home
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/stock">
+                        <i class="material-icons">archive</i>
+                        Estoque
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/items">
+                        <i class="material-icons">widgets</i>
+                        Itens
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/kits">
+                        <i class="material-icons">storage</i>
+                        Kits
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/orders">
+                        <i class="material-icons">list_alt</i>
+                        Pedidos
+                    </a>
+                </div>
+                <div class="link">
 
-    {% block content %}{% endblock %}
+                    <a href="/clients">
+                        <i class="material-icons">account_circle</i>
+                        Clientes
+                    </a>
+                </div>
+            </div>
+        </header>
 
-</body>
+        {% block content %}{% endblock %}
+
+        <script src="/scripts.js"></script>
+
+    </body>
 
 </html>
