@@ -3,11 +3,11 @@
 {% block content %}
     <div class="card show-edit-create-container">
         <div class="card-header">
-            <h2>Novo Item</h2>
+            <h2>Novo Kit</h2>
         </div>
-        <form action="/items" method="POST" class="details">
+        <form action="/kits" method="POST" class="details">
             
-            {% include "items/fields.njk" %}
+            {% include "kits/fields.njk" %}
 
             <button type="submit">Salvar Item</button>
         </form>
