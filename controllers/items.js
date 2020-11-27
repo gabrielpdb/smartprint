@@ -45,7 +45,12 @@ exports.post = function (req, res) {
     const { description } = req.body
 
     const created_at = Date.now()
-    const id = Number(data.items.length + 1)
+    let id = 1
+    const lastItem = data.items[data.items.length - 1]
+
+    if (lastItem) {
+        id = lastItem.id + 1
+    }
 
     data.items.push({
         id,
@@ -95,6 +100,7 @@ exports.put = function (req, res) {
     const item = {
         ...foundItem,
         ...req.body,
+        id: Number(req.body.id)
     }
 
     data.items[index] = item
