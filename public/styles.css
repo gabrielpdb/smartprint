@@ -68,14 +68,79 @@ header img {
 
 .card {
     background-color: white;
-    width: 800px;
+    width: 90vw;
     min-height: 400px;
     margin: 45px auto;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: block;
     box-shadow: 0px 2px 6px -2px;
     text-align: center;
     position: relative;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.header-card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-card a {
+    margin-bottom: 16px;
+    background-color: var(--primary-color);
+    padding: 8px 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+/* DETAILS */
+
+.details {
+    padding: 32px;
+}
+
+.details .item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 16px 0;
+}
+
+.details .item:nth-last-child(2) {
+    border: none;
+}
+
+.details h3, .details .item div:nth-child(1) {
+    font-size: 14px;
+    line-height: 24px;
+    color: #777;
+    letter-spacing: 0.7px;
+    font-weight: normal;
+}
+
+.details .item div:nth-child(2) {
+    color: #555;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.details h3 {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.details .item div:nth-child(2) span {
+    padding: 8px 16px;
+    background-color: var(--secondary-color);
+    border-radius: 16px;
+    color: #777;
+    margin-right: 4px;
+    margin-top: 8px;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
 }
 
 /* INDEX */
@@ -85,24 +150,6 @@ header img {
     padding: 30px;
     box-sizing: border-box;
     text-align: right;
-}
-
-.header-index {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.table-container .header-index>a {
-    margin-bottom: 16px;
-    display: inline-block;
-    background-color: var(--primary-color);
-    padding: 8px 16px;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: white;
-    font-size: 12px;
-    border-radius: 4px;
 }
 
 /* TABLE */
@@ -141,12 +188,6 @@ tbody tr td:last-child a {
     border-radius: 4px;
 }
 
-.table-container > a {
-    margin-bottom: 16px;
-    display: inline-block;
-}
-
-.table-container thead tr th:last-child,
-td:last-child {
+.table-container thead tr th:last-child, td:last-child {
     text-align: center;
 }
