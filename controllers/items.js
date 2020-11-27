@@ -3,7 +3,9 @@ const data = require('../data.json')
 
 //index
 exports.index = function (req, res) {
-    return res.render('items/index')
+
+    return res.render('items/index', { items: data.items })
+
 }
 
 //show
