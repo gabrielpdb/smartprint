@@ -26,7 +26,7 @@ server.use(routes)
 server.set('view engine', 'njk')
 
 // Configurar alguma coisa
-nunjucks.configure('views', {
+nunjucks.configure('src/app/views', {
     express: server,
     autoescape: false, // Funciona, por exemplo, quando tem tags HTML no meio de uma string
     noCache: true // Desativa o cache do Nunjucks
