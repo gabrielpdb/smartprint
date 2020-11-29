@@ -1,10 +1,10 @@
 const express = require('express')
 const routes = express.Router()
-const items = require('./controllers/items')
-const clients = require('./controllers/clients')
-const kits = require('./controllers/kits')
-const orders = require('./controllers/orders')
-const stock = require('./controllers/stock')
+const items = require('./app/controllers/items')
+const clients = require('./app/controllers/clients')
+const kits = require('./app/controllers/kits')
+const orders = require('./app/controllers/orders')
+const stock = require('./app/controllers/stock')
 
 routes.get('/', function(req, res) {
     return res.redirect('/home')
