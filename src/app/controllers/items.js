@@ -1,130 +1,59 @@
-const fs = require('fs')
-const data = require('../data.json')
+const Item = require('../models/Item')
+const { } = require('../../lib/utils')
 
-//index
-exports.index = function (req, res) {
 
-    return res.render('items/index', { items: data.items })
-
-}
-
-//show
-exports.show = function (req, res) {
-    const { id } = req.params
-
-    const foundItem = data.items.find(function (item) {
-        return item.id == id
-    })
-
-    if (!foundItem) return res.send('Item not found!')
-
-    const item = {
-        ...foundItem,
-        created_at: new Intl.DateTimeFormat('pt-BR').format(foundItem.created_at)
-    }
-
-    return res.render("items/show", { item: item })
-
-}
-
-//create
-exports.create = function (req, res) {
-    return res.render('items/create')
-}
-
-//post
-exports.post = function (req, res) {
-    const keys = Object.keys(req.body)
-
-    for (key of keys) {
-        if (req.body[key] == "") {
-            return res.send('Please, fill all fields!')
+module.exports = {
+    index(req, res) {
+        Item.all(function (items) {
+            return res.render('items/index', { items })
+        })
+    },
+    create(req, res) {
+        return res.render('items/create')
+    },
+    post(req, res) {
+        // Validation
+        if (req.body.description == "") {
+            return res.send('Please, insert a Item Description!')
         }
-    }
 
-    const { description } = req.body
+        if (req.body.height == "") req.body.height = 0
+        if (req.body.width == "") req.body.width = 0
 
-    const created_at = Date.now()
-    let id = 1
-    const lastItem = data.items[data.items.length - 1]
+        Item.create(req.body, function (item) {
+            return res.redirect(`/items/${item.id}`)
+        })
+    },
+    show(req, res) {
+        Item.find(req.params.id, function (item) {
+            if (!item) return res.send('Item not found!')
 
-    if (lastItem) {
-        id = lastItem.id + 1
-    }
+            return res.render('items/show', { item })
+        })
+    },
+    edit(req, res) {
+        Item.find(req.params.id, function (item) {
+            if (!item) return res.send('Item not found!')
 
-    data.items.push({
-        id,
-        description,
-        created_at
-    })
-
-    fs.writeFile("data.json", JSON.stringify(data, null, 2), function (err) {
-        if (err) return res.send("Write file error!")
-
-        return res.redirect('/items')
-    })
-}
-
-//edit
-exports.edit = function (req, res) {
-    // req.params
-    const { id } = req.params
-
-    const foundItem = data.items.find(function (item) {
-        return item.id == id
-    })
-
-    if (!foundItem) return res.send('Item not found!')
-
-    const item = {
-        ...foundItem,
-    }
-
-    return res.render('items/edit', { item })
-}
-
-//put
-exports.put = function (req, res) {
-    const { id } = req.body
-    let index = 0
-
-    const foundItem = data.items.find(function (item, foundIndex) {
-        if (id == item.id) {
-            index = foundIndex
-            return true
+            return res.render('items/edit', { item })
+        })
+    },
+    put(req, res) {
+        // Validation
+        if (req.body.description == "") {
+            return res.send('Please, insert a Item Description!')
         }
-    })
 
-    if (!foundItem) return res.send('Instructor not found!')
+        if (req.body.height == "") req.body.height = 0
+        if (req.body.width == "") req.body.width = 0
 
-    const item = {
-        ...foundItem,
-        ...req.body,
-        id: Number(req.body.id)
+        Item.update(req.body, function () {
+            return res.redirect(`/items/${req.body.id}`)
+        })
+    },
+    delete(req, res) {
+        Item.delete(req.body.id, function () {
+            return res.redirect(`/items`)
+        })
     }
-
-    data.items[index] = item
-
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), function (err) {
-        if (err) return res.send("Write Error!")
-
-        return res.redirect(`/items/${id}`)
-    })
-}
-
-//delete
-exports.delete = function (req, res) {
-    const { id } = req.body
-
-    const filteredItems = data.items.filter(function (item) {
-        return item.id != id
-    })
-
-    data.items = filteredItems
-
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), function (err) {
-        if (err) return res.send('Write file error!')
-
-        return res.redirect('/items')
-    })
 }

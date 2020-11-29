@@ -7,11 +7,7 @@ const orders = require('./app/controllers/orders')
 const stock = require('./app/controllers/stock')
 
 routes.get('/', function(req, res) {
-    return res.redirect('/home')
-})
-
-routes.get('/home', function (req, res) {
-    return res.render('home')
+    return res.redirect('/items')
 })
 
 /* ITEMS */
