@@ -113,10 +113,14 @@ a.edit-button {
 /* CONTAINERS */
 
 .index-container {
-    width: 70vw;
+    width: 60vw;
 }
 
 .show-edit-create-container {
+    width: 40vw;
+}
+
+.kits-index-container {
     width: 40vw;
 }
 
