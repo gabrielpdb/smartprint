@@ -1,0 +1,18 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+    <div class="card show-edit-create-container">
+        <div class="card-header">
+            <h2>{{kit.description}}</h2>
+        </div>
+        <form action="/kitsItems" method="POST" class="details">
+            
+            {% include "kits/fieldsItem.njk" %}
+
+            <input type="hidden" name="kit_id" value="{{ kit.id }}">
+
+            <button type="submit">Salvar Item</button>
+        </form>
+
+    </div>
+{% endblock content %}

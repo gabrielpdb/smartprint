@@ -6,6 +6,7 @@ module.exports = {
         db.query(`
         SELECT *
         FROM items
+        WHERE kit = false
         `, function (err, results) {
             if (err) throw `Database Error! ${err}`
 
@@ -28,7 +29,6 @@ module.exports = {
             data.width,
             false
         ]
-        console.log('chegou aqui')
 
         db.query(query, values, function (err, results) {
             if (err) throw `Database Error! ${err}`

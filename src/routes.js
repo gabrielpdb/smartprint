@@ -22,13 +22,18 @@ routes.delete('/items', items.delete)
 
 /* KITS */
 
-routes.get('/kits', function (req, res) {
-    return res.render('kits/index')
-})
-
-routes.get('/kits/create', function (req, res) {
-    return res.render('kits/create')
-})
+routes.get('/kits', kits.index)
+routes.get('/kits/create', kits.create)
+routes.get('/kits/:id/createItem', kits.createItem)
+routes.get('/kits/:id/edit', kits.edit)
+routes.get('/kitsItems/:id/edit', kits.editItems)
+routes.get('/kits/:id', kits.show)
+routes.post('/kits', kits.post)
+routes.post('/kitsItems', kits.postItems)
+routes.put('/kits', kits.put)
+routes.put('/kitsItems', kits.putItems)
+routes.delete('/kits', kits.delete)
+routes.delete('/kitsItems', kits.deleteItems)
 
 /* ORDERS */
 
