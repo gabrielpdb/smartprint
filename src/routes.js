@@ -6,7 +6,7 @@ const kits = require('./app/controllers/kits')
 const orders = require('./app/controllers/orders')
 const stock = require('./app/controllers/stock')
 
-routes.get('/', function(req, res) {
+routes.get('/', function (req, res) {
     return res.redirect('/items')
 })
 
@@ -35,18 +35,6 @@ routes.put('/kitsItems', kits.putItems)
 routes.delete('/kits', kits.delete)
 routes.delete('/kitsItems', kits.deleteItems)
 
-/* ORDERS */
-
-routes.get('/orders', function (req, res) {
-    return res.render('orders/index')
-})
-
-/* STOCK */
-
-routes.get('/stock', function (req, res) {
-    return res.render('stock/index')
-})
-
 /* CLIENTS */
 
 routes.get('/clients', clients.index)
@@ -57,7 +45,22 @@ routes.post('/clients', clients.post)
 routes.put('/clients', clients.put)
 routes.delete('/clients', clients.delete)
 
+/* STOCK */
 
+routes.get('/stock', function (req, res) {
+    return res.render('stock/index')
+})
 
+/* PRODUCTION */
+
+routes.get('/production', function (req, res) {
+    return res.render('production/index')
+})
+
+/* ORDERS */
+
+routes.get('/orders', function (req, res) {
+    return res.render('orders/index')
+})
 
 module.exports = routes
