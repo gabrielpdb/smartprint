@@ -1,5 +1,5 @@
 const db = require('../../config/db')
-const {} = require('../../lib/utils')
+const { } = require('../../lib/utils')
 
 module.exports = {
     all(callback) {
@@ -38,6 +38,24 @@ module.exports = {
         })
 
     },
+    createStock(id, callback) {
+        const query = `
+        INSERT INTO stock (
+            item_id,
+            quantity
+        ) VALUES ($1, $2)
+    `
+        const values = [
+            id,
+            0
+        ]
+
+        db.query(query, values, function (err, results) {
+            if (err) throw `Database Error! ${err}`
+
+            callback()
+        })
+    },
     find(id, callback) {
         db.query(`
             SELECT *
@@ -73,6 +91,13 @@ module.exports = {
     },
     delete(id, callback) {
         db.query(`DELETE FROM items WHERE id = $1`, [id], function (err, results) {
+            if (err) throw `Database Error! ${err}`
+
+            return callback()
+        })
+    },
+    deleteStock(id, callback) {
+        db.query(`DELETE FROM stock WHERE item_id = $1`, [id], function (err, results) {
             if (err) throw `Database Error! ${err}`
 
             return callback()

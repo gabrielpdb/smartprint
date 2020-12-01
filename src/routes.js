@@ -47,9 +47,9 @@ routes.delete('/clients', clients.delete)
 
 /* STOCK */
 
-routes.get('/stock', function (req, res) {
-    return res.render('stock/index')
-})
+routes.get('/stock', stock.index) 
+routes.get('/stock/:id/edit', stock.edit)
+routes.put('/stock', stock.put)
 
 /* PRODUCTION */
 

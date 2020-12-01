@@ -21,7 +21,9 @@ module.exports = {
         if (req.body.width == "") req.body.width = 0
 
         Item.create(req.body, function (item) {
-            return res.redirect(`/items/${item.id}`)
+            Item.createStock(item.id, function () {
+                return res.redirect(`/items/${item.id}`)
+            })
         })
     },
     show(req, res) {
@@ -53,7 +55,9 @@ module.exports = {
     },
     delete(req, res) {
         Item.delete(req.body.id, function () {
-            return res.redirect(`/items`)
+            Item.deleteStock(req.body.id, function () {
+                return res.redirect(`/items`)
+            })
         })
     }
 }
