@@ -6,7 +6,6 @@ module.exports = {
     index(req, res) {
         Stock.all(function (items) {
 
-            console.log(items)
             return res.render('stock/index', { items })
         })
     },
