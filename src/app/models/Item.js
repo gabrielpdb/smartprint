@@ -7,6 +7,7 @@ module.exports = {
         SELECT *
         FROM items
         WHERE kit = false
+        ORDER BY description ASC
         `, function (err, results) {
             if (err) throw `Database Error! ${err}`
 

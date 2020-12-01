@@ -3,39 +3,31 @@
 {% block content %}
     <div class="card index-container">
         <div class="card-header">
-            <h2>Itens Cadastrados</h2>
+            <h2>Clientes Cadastrados</h2>
             <div class="buttons">
-                <a href="/items/create" class="button">Novo Item</a>
+                <a href="/clients/create" class="button">Novo Cliente</a>
             </div>
         </div>
         <table width="100%">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Descrição do item</th>
-                    <th>Largura (mm)</th>
-                    <th>Altura (mm)</th>
+                    <th>Nome do cliente</th>
                     <th>Ação</th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for item in items %}
+                {% for client in clients %}
                     <tr>
                         <td>
-                            {{item.id}}
+                            {{client.id}}
                         </td>
                         <td>
-                            {{item.description}}
+                            {{client.name}}
                         </td>
                         <td>
-                            {{item.width}}
-                        </td>
-                        <td>
-                            {{item.height}}
-                        </td>
-                        <td>
-                            <a href="/items/{{item.id}}/edit" class="button">Editar</a>
+                            <a href="/clients/{{client.id}}/edit" class="button">Editar</a>
                         </td>
                     </tr>
                 {% endfor %}

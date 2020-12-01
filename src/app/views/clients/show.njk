@@ -5,22 +5,14 @@
         <div class="card-header">
             <h2>Detalhes</h2>
             <div class="buttons">
-                <a href="/items/{{item.id}}/edit" class="button edit-button">Editar</a>
-                <a href="/items" class="button">Itens</a>
+                <a href="/clients/{{client.id}}/edit" class="button edit-button">Editar</a>
+                <a href="/clients" class="button">Clientes</a>
             </div>
         </div>
         <section class="details">
             <div class="item">
-                <div>Descrição</div>
-                <div>{{item.description}}</div>
-            </div>
-            <div class="item">
-                <div>Largura (mm)</div>
-                <div>{{item.width}}</div>
-            </div>
-            <div class="item">
-                <div>Altura (mm)</div>
-                <div>{{item.height}}</div>
+                <div>Nome do cliente</div>
+                <div>{{client.name}}</div>
             </div>
         </section>
     </div>

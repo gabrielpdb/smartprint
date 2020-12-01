@@ -49,10 +49,13 @@ routes.get('/stock', function (req, res) {
 
 /* CLIENTS */
 
-routes.get('/clients', function (req, res) {
-    return res.render('clients/index')
-})
-
+routes.get('/clients', clients.index)
+routes.get('/clients/create', clients.create)
+routes.get('/clients/:id/edit', clients.edit)
+routes.get('/clients/:id', clients.show)
+routes.post('/clients', clients.post)
+routes.put('/clients', clients.put)
+routes.delete('/clients', clients.delete)
 
 
 
