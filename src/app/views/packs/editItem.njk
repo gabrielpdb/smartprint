@@ -5,21 +5,23 @@
         <div class="card-header">
             <h2>Detalhes</h2>
             <div class="buttons">
-                <form action="/items?_method=DELETE" method="post">
+                <form action="/kitsItems?_method=DELETE" method="post" id="form-delete">
                     <input type="hidden" name="id" value="{{ item.id }}">
                     <button type="submit" class="delete-button">Excluir item</button>
                 </form>
 
             </div>
         </div>
-        <form action="/items?_method=PUT" method="post" class="details">
+        <form action="/kitsItems?_method=PUT" method="post" class="details">
 
-            {% include "items/fields.njk" %}
+            {% include "kits/fieldsItem.njk" %}
 
             <input type="hidden" name="id" value="{{ item.id }}">
 
-            <button type="submit">Salvar item</button>
+            <button type="submit">Salvar Item</button>
         </form>
     </div>
+
+    {% include "confirmDelete.njk" %}
 
 {% endblock content %}

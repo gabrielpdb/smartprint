@@ -1,0 +1,18 @@
+<div class="item">
+    <div>Item</div>
+    <div>
+        <select name="item_id">
+            {% for oneItem in allItems %}
+                <option value="{{oneItem.id}}" {% if item.item_id == oneItem.id %} selected="selected"
+                {% endif %}>{{oneItem.description}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="item">
+    <div>Quantidade</div>
+    <div>
+        <input type="number" name="quantity" value="{{item.quantity}}">
+    </div>
+</div>

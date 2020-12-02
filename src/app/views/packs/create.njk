@@ -1,0 +1,16 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+    <div class="card show-edit-create-container">
+        <div class="card-header">
+            <h2>Novo Kit</h2>
+        </div>
+        <form action="/kits" method="POST" class="details">
+            
+            {% include "kits/fields.njk" %}
+
+            <button type="submit">Criar Kit</button>
+        </form>
+
+    </div>
+{% endblock content %}

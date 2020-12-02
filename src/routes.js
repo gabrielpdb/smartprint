@@ -51,11 +51,12 @@ routes.get('/stock', stock.index)
 routes.get('/stock/:id/edit', stock.edit)
 routes.put('/stock', stock.put)
 
-/* PRODUCTION */
+/* PACKS */
 
-routes.get('/production', function (req, res) {
-    return res.render('production/index')
+routes.get('/packs', function (req, res) {
+    return res.render('packs/index')
 })
+//routes.get('/packs/create', packs.create)
 
 /* ORDERS */
 

@@ -1,0 +1,45 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+    <div class="card show-edit-create-container">
+        <div class="card-header">
+            <h2>{{kit.description}}</h2>
+            <div class="buttons">
+                <a href="/kits/{{kit.id}}/createItem" class="button">Novo item</a>
+                <a href="/kits/{{kit.id}}/edit" class="button edit-button">Editar</a>
+                <a href="/kits" class="button">Kits</a>
+            </div>
+        </div>
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Item</th>
+                    <th>Quantidade</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>
+                            {{item.id}}
+                        </td>
+                        <td>
+                            {{item.description}}
+                        </td>
+                        <td>
+                            {{item.quantity}}
+                        </td>
+                        <td>
+                            <a href="/kitsItems/{{item.id}}/edit" class="button">Editar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+
+    </div>
+
+{% endblock content %}
