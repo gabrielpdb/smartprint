@@ -1,5 +1,4 @@
 const db = require('../../config/db')
-const { } = require('../../lib/utils')
 
 module.exports = {
     all(callback) {
@@ -78,7 +77,6 @@ module.exports = {
         })
     },
     findItemsKit(id, callback) {
-
         db.query(`
             SELECT kit_items.id, items.description, kit_items.quantity 
             FROM items

@@ -5,6 +5,7 @@ const clients = require('./app/controllers/clients')
 const kits = require('./app/controllers/kits')
 const orders = require('./app/controllers/orders')
 const stock = require('./app/controllers/stock')
+const packs = require('./app/controllers/packs')
 
 routes.get('/', function (req, res) {
     return res.redirect('/items')
@@ -53,10 +54,20 @@ routes.put('/stock', stock.put)
 
 /* PACKS */
 
-routes.get('/packs', function (req, res) {
-    return res.render('packs/index')
-})
-//routes.get('/packs/create', packs.create)
+routes.get('/packs', packs.index)
+routes.get('/packs/create', packs.create)
+routes.post('/packs', packs.post)
+routes.get('/packs/:id', packs.show)
+routes.get('/packs/:id/edit', packs.edit)
+routes.put('/packs', packs.put)
+routes.delete('/packs', packs.delete)
+routes.get('/packs/:id/createItem', packs.createItem)
+routes.get('/packsItems/:id/edit', packs.editItem)
+routes.post('/packsItems', packs.postItem)
+routes.put('/packsItems', packs.putItem)
+routes.delete('/packsItems', packs.deleteItem)
+
+
 
 /* ORDERS */
 

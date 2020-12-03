@@ -3,13 +3,13 @@
 {% block content %}
     <div class="card show-edit-create-container">
         <div class="card-header">
-            <h2>{{kit.description}}</h2>
+            <h2>{{pack.description}}</h2>
         </div>
-        <form action="/kitsItems" method="POST" class="details">
+        <form action="/packsItems" method="POST" class="details">
             
-            {% include "kits/fieldsItem.njk" %}
+            {% include "packs/fieldsItem.njk" %}
 
-            <input type="hidden" name="kit_id" value="{{ kit.id }}">
+            <input type="hidden" name="pack_id" value="{{ pack.id }}">
 
             <button type="submit">Salvar Item</button>
         </form>

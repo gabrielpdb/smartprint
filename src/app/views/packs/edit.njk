@@ -5,20 +5,20 @@
         <div class="card-header">
             <h2>Detalhes</h2>
             <div class="buttons">
-                <form action="/kits?_method=DELETE" method="post" id="form-delete">
-                    <input type="hidden" name="id" value="{{ kit.id }}">
-                    <button type="submit" class="delete-button">Excluir kit</button>
+                <form action="/packs?_method=DELETE" method="post" id="form-delete">
+                    <input type="hidden" name="id" value="{{ pack.id }}">
+                    <button type="submit" class="delete-button">Excluir pacote</button>
                 </form>
 
             </div>
         </div>
-        <form action="/kits?_method=PUT" method="post" class="details">
+        <form action="/packs?_method=PUT" method="post" class="details">
 
-            {% include "kits/fields.njk" %}
+            {% include "packs/fields.njk" %}
 
-            <input type="hidden" name="id" value="{{ kit.id }}">
+            <input type="hidden" name="id" value="{{ pack.id }}">
 
-            <button type="submit">Salvar kit</button>
+            <button type="submit">Salvar pacote</button>
         </form>
     </div>
 

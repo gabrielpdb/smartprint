@@ -12,22 +12,34 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Descrição do kit</th>
+                    <th>Descrição do pacote</th>
+                    <th>Data inicial</th>
+                    <th>Data final</th>
+                    <th>Status</th>
                     <th>Ação</th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for kit in kits %}
+                {% for pack in packs %}
                     <tr>
                         <td>
-                            {{kit.id}}
+                            {{pack.id}}
                         </td>
                         <td>
-                            {{kit.description}}
+                            {{pack.description}}
                         </td>
                         <td>
-                            <a href="/kits/{{kit.id}}" class="button">Ver</a>
+                            {{pack.start_date}}
+                        </td>
+                        <td>
+                            {{pack.finish_date}}
+                        </td>
+                        <td>
+                            {{pack.status}}
+                        </td>
+                        <td>
+                            <a href="/packs/{{pack.id}}" class="button">Ver</a>
                         </td>
                     </tr>
                 {% endfor %}
