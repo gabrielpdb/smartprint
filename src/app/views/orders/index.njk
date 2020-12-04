@@ -3,39 +3,43 @@
 {% block content %}
     <div class="card index-container">
         <div class="card-header">
-            <h2>Itens Cadastrados</h2>
+            <h2>Pedidos Cadastrados</h2>
             <div class="buttons">
-                <a href="/items/create" class="button">Novo Item</a>
+                <a href="/orders/create" class="button">Novo Pedido</a>
             </div>
         </div>
         <table width="100%">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Descrição do item</th>
-                    <th>Largura (mm)</th>
-                    <th>Altura (mm)</th>
+                    <th>Número do pedido</th>
+                    <th>Cliente</th>
+                    <th>Data de entrada</th>
+                    <th>Data de finalização</th>
+                    <th>Status</th>
                     <th>Ação</th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for item in items %}
+                {% for order in orders %}
                     <tr>
                         <td>
-                            {{item.id}}
+                            {{order.id}}
                         </td>
                         <td>
-                            {{item.description}}
+                            {{order.client}}
                         </td>
                         <td>
-                            {{item.width}}
+                            {{order.start_date}}
                         </td>
                         <td>
-                            {{item.height}}
+                            {{order.finish_date}}
                         </td>
                         <td>
-                            <a href="/items/{{item.id}}/edit" class="button">Editar</a>
+                            {{order.status}}
+                        </td>
+                        <td>
+                            <a href="/orders/{{order.id}}/edit" class="button">Editar</a>
                         </td>
                     </tr>
                 {% endfor %}
