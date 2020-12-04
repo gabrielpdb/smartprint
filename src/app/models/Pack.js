@@ -48,7 +48,7 @@ module.exports = {
     },
     findItemsOfPack(id, callback) {
         db.query(`
-            SELECT pack_items.id, items.description, pack_items.quantity 
+            SELECT pack_items.id, items.id AS item_id, items.description, pack_items.quantity 
             FROM items
             JOIN pack_items ON items.id = pack_items.item_id
             WHERE pack_items.pack_id = $1
@@ -177,6 +177,27 @@ module.exports = {
                 status = ($1)
             WHERE id = $2
         `, [status, id], function (err, results) {
+            if (err) throw `Database Error! ${err}`
+
+            callback()
+        })
+    },
+    getItemInStock(id, callback) {
+        db.query(`
+            SELECT item_id, quantity FROM stock WHERE item_id = $1
+        `, [id], function (err, results) {
+            if (err) throw `Database Error! ${err}`
+
+            callback(results.rows[0])
+        })
+    },
+    updateItemQuantityInStock(quantity, item_id, callback) {
+        db.query(`
+            UPDATE stock
+            SET
+                quantity = ($1)
+            WHERE item_id = $2
+        `, [quantity, item_id], function (err, results) {
             if (err) throw `Database Error! ${err}`
 
             callback()

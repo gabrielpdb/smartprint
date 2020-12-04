@@ -106,8 +106,14 @@ a.edit-button {
     background-color: var(--yellow-color);
 }
 
-.buttons a + a {
+.buttons a + a,
+.buttons a + form,
+.buttons form + a {
     margin-left: 12px;
+}
+
+.buttons {
+    display: flex;
 }
 
 /* CONTAINERS */

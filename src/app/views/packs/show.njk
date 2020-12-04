@@ -7,7 +7,10 @@
             <div class="buttons">
                 <a href="/packs/{{pack.id}}/createItem" class="button">Novo item</a>
                 <a href="/packs/{{pack.id}}/edit" class="button edit-button">Editar</a>
-                <a href="#" class="button">Pronto</a>
+                <form action="/packsStock?_method=PUT" method="post" id="form-ready">
+                    <input type="hidden" name="id" value="{{ pack.id }}">
+                    <button type="submit" class="button">Pronto</button>
+                </form>
                 <a href="/packs" class="button">Packs</a>
             </div>
         </div>
@@ -40,7 +43,8 @@
             </tbody>
         </table>
         
-
     </div>
+
+    {% include "confirmReady.njk" %}
 
 {% endblock content %}

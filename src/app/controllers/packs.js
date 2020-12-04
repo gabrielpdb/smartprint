@@ -132,5 +132,25 @@ module.exports = {
         Pack.deleteItemOfPack(req.body.id, function (pack_id) {
             return res.redirect(`/packs/${pack_id.pack_id}`)
         })
+    },
+    packFinished(req, res) {
+        Pack.findItemsOfPack(req.body.id, function (items) {
+            for (item of items) {
+                Pack.getItemInStock(item.item_id, function (stockItem) {
+                    const updatedItem = {
+                        ...stockItem,
+                        quantity: stockItem.quantity + item.quantity
+                    }
+
+                    Pack.updateItemQuantityInStock(updatedItem.quantity, updatedItem.item_id, function () { })
+                })
+            }
+
+            Pack.updateStatusOfPack('Pronto', req.body.id, function () {
+                return res.redirect('/packs')
+
+            })
+
+        })
     }
 }

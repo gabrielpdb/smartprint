@@ -66,8 +66,7 @@ routes.get('/packsItems/:id/edit', packs.editItem)
 routes.post('/packsItems', packs.postItem)
 routes.put('/packsItems', packs.putItem)
 routes.delete('/packsItems', packs.deleteItem)
-
-
+routes.put('/packsStock', packs.packFinished)
 
 /* ORDERS */
 

@@ -1,0 +1,11 @@
+<script>
+    const formReady = document.querySelector("#form-ready")
+
+    formReady.addEventListener('submit', function (event) {
+        const confirmation = confirm('Deseja mesmo inserir o pacote no estoque?')
+        if (!confirmation) {
+            event.preventDefault()
+        }
+
+    })
+</script>
