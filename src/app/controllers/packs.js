@@ -147,10 +147,10 @@ module.exports = {
             }
 
             Pack.updateStatusOfPack('Pronto', req.body.id, function () {
-                return res.redirect('/packs')
-
+                Pack.updateFinishDateOfPack(req.body.id, function () {
+                    return res.redirect('/packs')
+                })
             })
-
         })
     }
 }

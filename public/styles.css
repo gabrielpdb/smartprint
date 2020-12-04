@@ -102,6 +102,10 @@ a.button, button {
     background-color: var(--magenta-color);
 }
 
+tbody tr td:last-child a.disable-button {
+    background-color: #777;
+}
+
 a.edit-button {
     background-color: var(--yellow-color);
 }

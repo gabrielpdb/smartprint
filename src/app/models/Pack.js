@@ -202,5 +202,17 @@ module.exports = {
 
             callback()
         })
+    },
+    updateFinishDateOfPack(id, callback) {
+        db.query(`
+            UPDATE packs
+            SET
+                finish_date = ($1)
+            WHERE id = $2
+        `, [date(Date.now()).iso, id], function (err, results) {
+            if (err) throw `Database Error! ${err}`
+
+            callback()
+        })
     }
 }

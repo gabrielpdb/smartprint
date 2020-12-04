@@ -5,12 +5,17 @@
         <div class="card-header">
             <h2>{{pack.description}}</h2>
             <div class="buttons">
-                <a href="/packs/{{pack.id}}/createItem" class="button">Novo item</a>
+                {% if pack.status != "Pronto" %}
+                    <a href="/packs/{{pack.id}}/createItem" class="button">Novo item</a>
+                {% endif %}
+                {% if pack.status != "Pronto" %}
+                    <form action="/packsStock?_method=PUT" method="post" id="form-ready">
+                        <input type="hidden" name="id" value="{{ pack.id }}">
+                        <button type="submit" class="button">Pronto</button>
+                    </form>
+                {% endif %}
                 <a href="/packs/{{pack.id}}/edit" class="button edit-button">Editar</a>
-                <form action="/packsStock?_method=PUT" method="post" id="form-ready">
-                    <input type="hidden" name="id" value="{{ pack.id }}">
-                    <button type="submit" class="button">Pronto</button>
-                </form>
+
                 <a href="/packs" class="button">Packs</a>
             </div>
         </div>
@@ -36,13 +41,17 @@
                             {{item.quantity}}
                         </td>
                         <td>
-                            <a href="/packsItems/{{item.id}}/edit" class="button">Editar</a>
+                            {% if pack.status != "Pronto" %}
+                                <a href="/packsItems/{{item.id}}/edit" class="button">Editar</a>
+                            {% else %}
+                                <a href="#" class="button disable-button">Editar</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        
+
     </div>
 
     {% include "confirmReady.njk" %}
