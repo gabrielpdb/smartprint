@@ -74,7 +74,13 @@ routes.get('/orders', orders.index)
 routes.get('/orders/create', orders.create)
 routes.post('/orders', orders.post)
 routes.get('/orders/:id', orders.show)
-routes.get('/orders/:id/edit', orders.edit)
+routes.delete('/orders', orders.delete)
+routes.get('/orders/:id/createItem', orders.createItem)
+routes.get('/ordersItems/:id/edit', orders.editItem)
+routes.post('/ordersItems', orders.postItem)
+routes.put('/ordersItems', orders.putItem)
+routes.delete('/ordersItems', orders.deleteItem)
+routes.put('/ordersStock', orders.orderFinished)
 
 
 module.exports = routes

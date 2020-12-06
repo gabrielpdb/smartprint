@@ -4,6 +4,7 @@
     --magenta-color: #ec268f;
     --yellow-color: #f7bf1e;
     --black-color: #373435;
+    --green-color: #5de970;
 }
 
 * {
@@ -112,12 +113,21 @@ a.edit-button {
 
 .buttons a + a,
 .buttons a + form,
-.buttons form + a {
+.buttons form + a,
+.buttons form + form {
     margin-left: 12px;
 }
 
 .buttons {
     display: flex;
+}
+
+.buttons #form-ready button {
+    background-color: var(--green-color);
+}
+
+.buttons .yellow-button {
+    background-color: var(--yellow-color);
 }
 
 /* CONTAINERS */
