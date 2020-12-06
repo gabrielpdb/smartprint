@@ -70,8 +70,11 @@ routes.put('/packsStock', packs.packFinished)
 
 /* ORDERS */
 
-routes.get('/orders', function (req, res) {
-    return res.render('orders/index')
-})
+routes.get('/orders', orders.index)
+routes.get('/orders/create', orders.create)
+routes.post('/orders', orders.post)
+routes.get('/orders/:id', orders.show)
+routes.get('/orders/:id/edit', orders.edit)
+
 
 module.exports = routes
