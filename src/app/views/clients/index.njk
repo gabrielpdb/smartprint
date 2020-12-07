@@ -11,7 +11,6 @@
         <table width="100%">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nome do cliente</th>
                     <th>Ação</th>
                 </tr>
@@ -20,9 +19,6 @@
             <tbody>
                 {% for client in clients %}
                     <tr>
-                        <td>
-                            {{client.id}}
-                        </td>
                         <td>
                             {{client.name}}
                         </td>

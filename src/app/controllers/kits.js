@@ -1,7 +1,5 @@
 const Kit = require('../models/Kit')
 const { } = require('../../lib/utils')
-const { allItems } = require('../models/Kit')
-
 
 module.exports = {
     index(req, res) {

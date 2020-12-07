@@ -78,7 +78,7 @@ module.exports = {
     },
     findItemsKit(id, callback) {
         db.query(`
-            SELECT kit_items.id, items.description, kit_items.quantity 
+            SELECT kit_items.id, items.description, items.id AS item_id, kit_items.quantity 
             FROM items
             JOIN kit_items ON items.id = kit_items.item_id
             WHERE kit_items.kit_id = $1
@@ -87,6 +87,14 @@ module.exports = {
 
             callback(results.rows)
         })
+    },
+    findItemsKitAA(id) {
+        return db.query(`
+            SELECT kit_items.id, items.description, items.id AS item_id, kit_items.quantity 
+            FROM items
+            JOIN kit_items ON items.id = kit_items.item_id
+            WHERE kit_items.kit_id = $1
+        `, [id])
     },
     findItemOfKit(id, callback) {
         db.query(`

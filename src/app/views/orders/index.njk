@@ -27,7 +27,7 @@
                             {{order.id}}
                         </td>
                         <td>
-                            {{order.client}}
+                            {{order.client_name}}
                         </td>
                         <td>
                             {{order.start_date}}
@@ -39,7 +39,7 @@
                             {{order.status}}
                         </td>
                         <td>
-                            <a href="/orders/{{order.id}}/edit" class="button">Editar</a>
+                            <a href="/orders/{{order.id}}" class="button">Ver</a>
                         </td>
                     </tr>
                 {% endfor %}

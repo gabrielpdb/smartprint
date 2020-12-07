@@ -1,20 +1,10 @@
 <div class="item">
-    <div>Descrição</div>
+    <div>Cliente</div>
     <div>
-        <input type="text" name="description" placeholder="Insira a descrição do item aqui" value="{{ item.description }}">
-    </div>
-</div>
-
-<div class="item">
-    <div>Largura</div>
-    <div>
-        <input type="number" name="width" value="{{ item.width }}">
-    </div>
-</div>
-
-<div class="item">
-    <div>Altura</div>
-    <div>
-        <input type="number" name="height" value="{{ item.height }}">
+        <select name="client_id">
+            {% for client in clients %}
+                <option value="{{client.id}}" {% if order.client_id == client.id %} selected="selected" {% endif %}>{{client.name}}</option>
+            {% endfor %}
+        </select>
     </div>
 </div>

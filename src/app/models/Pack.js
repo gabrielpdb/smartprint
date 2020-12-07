@@ -35,6 +35,24 @@ module.exports = {
         })
 
     },
+    createPackAA(description) {
+        const query = `
+            INSERT INTO packs (
+                description,
+                status,
+                start_date
+            ) VALUES ($1, $2, $3)
+            RETURNING id
+        `
+        const values = [
+            description,
+            "Criado",
+            date(Date.now()).iso
+        ]
+
+        return db.query(query, values)
+
+    },
     findPack(id, callback) {
         db.query(`
             SELECT *
@@ -57,6 +75,14 @@ module.exports = {
 
             callback(results.rows)
         })
+    },
+    findItemsOfPackAA(id) {
+        return db.query(`
+            SELECT pack_items.id, items.id AS item_id, items.description, pack_items.quantity 
+            FROM items
+            JOIN pack_items ON items.id = pack_items.item_id
+            WHERE pack_items.pack_id = $1
+        `, [id])
     },
     findItemOfPack(id, callback) {
         db.query(`
@@ -138,6 +164,22 @@ module.exports = {
             callback()
         })
     },
+    createItemOfPackAA(data) {
+        const query = `
+            INSERT INTO pack_items (
+                quantity,
+                item_id,
+                pack_id
+            ) VALUES ($1, $2, $3)
+        `
+        const values = [
+            data.quantity,
+            data.item_id,
+            data.pack_id
+        ]
+
+        return db.query(query, values)
+    },
     updateItemOfPack(data, callback) {
         const query = `
             UPDATE pack_items
@@ -182,26 +224,18 @@ module.exports = {
             callback()
         })
     },
-    getItemInStock(id, callback) {
-        db.query(`
+    getItemInStock(id) {
+        return db.query(`
             SELECT item_id, quantity FROM stock WHERE item_id = $1
-        `, [id], function (err, results) {
-            if (err) throw `Database Error! ${err}`
-
-            callback(results.rows[0])
-        })
+        `, [id])
     },
-    updateItemQuantityInStock(quantity, item_id, callback) {
-        db.query(`
+    updateItemQuantityInStock(quantity, item_id) {
+        return db.query(`
             UPDATE stock
             SET
                 quantity = ($1)
             WHERE item_id = $2
-        `, [quantity, item_id], function (err, results) {
-            if (err) throw `Database Error! ${err}`
-
-            callback()
-        })
+        `, [quantity, item_id])
     },
     updateFinishDateOfPack(id, callback) {
         db.query(`

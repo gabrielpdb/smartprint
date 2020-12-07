@@ -24,6 +24,13 @@ module.exports = {
             callback(results.rows[0])
         })
     },
+    findItemByItemId(id) {
+        return db.query(`
+            SELECT *
+            FROM stock
+            WHERE item_id = $1
+        `, [id])
+    },
     update(data, callback) {
         const query = `
             UPDATE stock 

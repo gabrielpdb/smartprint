@@ -133,24 +133,28 @@ module.exports = {
             return res.redirect(`/packs/${pack_id.pack_id}`)
         })
     },
-    packFinished(req, res) {
-        Pack.findItemsOfPack(req.body.id, function (items) {
-            for (item of items) {
-                Pack.getItemInStock(item.item_id, function (stockItem) {
-                    const updatedItem = {
-                        ...stockItem,
-                        quantity: stockItem.quantity + item.quantity
-                    }
+    async packFinished(req, res) {
+        let results = await Pack.findItemsOfPackAA(req.body.id)
+        const itemsOfPack = results.rows
 
-                    Pack.updateItemQuantityInStock(updatedItem.quantity, updatedItem.item_id, function () { })
-                })
+        for (item of itemsOfPack) {
+            results = await Pack.getItemInStock(item.item_id)
+            const stockItem = results.rows[0]
+            const updatedItem = {
+                ...stockItem,
+                quantity: stockItem.quantity + item.quantity
             }
 
-            Pack.updateStatusOfPack('Pronto', req.body.id, function () {
-                Pack.updateFinishDateOfPack(req.body.id, function () {
-                    return res.redirect('/packs')
-                })
+            await Pack.updateItemQuantityInStock(updatedItem.quantity, updatedItem.item_id)
+        }
+
+
+
+        Pack.updateStatusOfPack('Pronto', req.body.id, function () {
+            Pack.updateFinishDateOfPack(req.body.id, function () {
+                return res.redirect('/packs')
             })
         })
+
     }
 }

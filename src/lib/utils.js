@@ -2,9 +2,9 @@ module.exports = {
     date(timestamp) {
         const date = new Date(timestamp)
 
-        const hour = date.getHours()
-        const minutes = date.getMinutes()
-        const seconds = date.getSeconds()
+        const hour = `0${date.getHours()}`.slice(-2)
+        const minutes = `0${date.getMinutes()}`.slice(-2)
+        const seconds = `0${date.getSeconds()}`.slice(-2)
 
         const year = date.getUTCFullYear()
         const month = `0${date.getUTCMonth() + 1}`.slice(-2)
