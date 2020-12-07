@@ -1,4 +1,6 @@
 const db = require('../../config/db')
+const { date } = require('../../lib/utils')
+
 
 module.exports = {
     getAllOrders(callback) {
@@ -46,8 +48,16 @@ module.exports = {
         `, [id], function (err, results) {
             if (err) throw `Database Error! ${err}`
 
-            callback(results.rows)
+            return callback(results.rows)
         })
+    },
+    findItemsOfOrderAA(id) {
+        return db.query(`
+            SELECT order_items.id, items.id AS item_id, items.description, items.kit, order_items.quantity, order_items.order_id
+            FROM order_items
+            JOIN items ON items.id = order_items.item_id
+            WHERE order_id = $1
+        `, [id])
     },
     findItemOfOrder(id, callback) {
         db.query(`
@@ -157,6 +167,31 @@ module.exports = {
     updateFinishDateOfOrder(id, callback) {
         db.query(`
             UPDATE orders
+            SET
+                finish_date = ($1)
+            WHERE id = $2
+        `, [date(Date.now()).iso, id], function (err, results) {
+            if (err) throw `Database Error! ${err}`
+
+            callback()
+        })
+    },
+    getItemInStock(id) {
+        return db.query(`
+            SELECT item_id, quantity FROM stock WHERE item_id = $1
+        `, [id])
+    },
+    updateItemQuantityInStock(quantity, item_id) {
+        return db.query(`
+            UPDATE stock
+            SET
+                quantity = ($1)
+            WHERE item_id = $2
+        `, [quantity, item_id])
+    },
+    updateFinishDateOfPack(id, callback) {
+        db.query(`
+            UPDATE packs
             SET
                 finish_date = ($1)
             WHERE id = $2

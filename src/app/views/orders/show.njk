@@ -7,9 +7,12 @@
             <div class="buttons">
                 {% if order.status != "Pronto" %}
                     <a href="/orders/{{order.id}}/createItem" class="button">Novo item</a>
-                    <a href="#" class="button yellow-button">Gerar pacote</a>
+                    <form action="/orders/createPack" method="post">
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                        <button type="submit" class="button yellow-button">Gerar pacote</button>
+                    </form>
                     <form action="/ordersStock?_method=PUT" method="post" id="form-ready">
-                        <input type="hidden" name="id" value="{{ order.id }}">
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
                         <button type="submit" class="button">Pronto</button>
                     </form>
                 {% endif %}

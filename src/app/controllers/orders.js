@@ -1,7 +1,10 @@
 const Order = require('../models/Order')
 const Kit = require('../models/Kit')
 const Client = require('../models/Client')
+const Stock = require('../models/Stock')
 const { date } = require('../../lib/utils')
+const Pack = require('../models/Pack')
+const packs = require('./packs')
 
 module.exports = {
     index(req, res) {
@@ -113,23 +116,140 @@ module.exports = {
             return res.redirect(`/orders/${order_id.order_id}`)
         })
     },
-    orderFinished(req, res) {
-        Order.findItemsOfOrder(req.body.id, function (items) {
-            for (item of items) {
-                Order.getItemInStock(item.item_id, function (stockItem) {
-                    const updatedItem = {
-                        ...stockItem,
-                        quantity: stockItem.quantity + item.quantity
-                    }
+    async createPack(req, res) {
+        let itemsOfPack = []
+        let preItemsOfPack = []
+        let results = await Order.findItemsOfOrderAA(req.body.order_id)
+        let itemsOfOrder = results.rows
 
-                    Order.updateItemQuantityInStock(updatedItem.quantity, updatedItem.item_id, function () { })
+
+        for (item of itemsOfOrder) {
+            if (!item.kit) {
+                itemsOfPack.push(item)
+            } else {
+                results = await Kit.findItemsKitAA(item.item_id)
+
+                results.rows = results.rows.map(function (itemOfKit) {
+                    return {
+                        ...itemOfKit,
+                        quantity: itemOfKit.quantity * item.quantity
+                    }
                 })
+
+                const itemsOfKit = results.rows
+
+                for (itemOfKit of itemsOfKit) {
+                    for (itemOfPack of itemsOfPack) {
+                        if (itemOfPack.item_id == itemOfKit.item_id) {
+                            itemOfPack.quantity = itemOfPack.quantity + itemOfKit.quantity
+                        } else if (itemOfPack.item_id != itemOfKit.item_id) {
+                            preItemsOfPack.push(itemOfKit)
+                        }
+                    }
+                }
+
+                for (item of preItemsOfPack) {
+                    itemsOfPack.push(item)
+                }
+
+            }
+        }
+
+        itemsOfOrder = itemsOfPack
+
+        // Até aqui eu tenho todos os itens necessários do pedido
+
+        for (item of itemsOfPack) {
+            results = await Stock.findItemByItemId(item.item_id)
+
+            item.quantity = item.quantity - results.rows[0].quantity
+        }
+
+        // Aqui eu descontei o que tinha no estoque
+
+        results = await Pack.createPackAA(`Pacote do pedido n° ${req.body.order_id}`)
+        const pack_id = results.rows[0]
+        itemsOfPack = itemsOfPack.map(function (item) {
+            return {
+                ...item,
+                pack_id: pack_id.id
+            }
+        })
+
+        for (item of itemsOfPack) {
+            if (item.quantity > 0) {
+                results = await Pack.createItemOfPackAA(item)
+            }
+        }
+
+        Pack.findPack(pack_id.id, function (pack) {
+            if (!pack) return res.send('Pack not found!')
+
+            Pack.findItemsOfPack(pack_id.id, function (items) {
+                if (!items) return res.send('Items not found!')
+
+                return res.redirect(`/packs/${pack_id.id}`)
+
+            })
+        })
+    },
+    async orderFinished(req, res) {
+        let itemsOfPack = []
+        let preItemsOfPack = []
+        let results = await Order.findItemsOfOrderAA(req.body.order_id)
+        let itemsOfOrder = results.rows
+
+
+        for (item of itemsOfOrder) {
+            if (!item.kit) {
+                itemsOfPack.push(item)
+            } else {
+                results = await Kit.findItemsKitAA(item.item_id)
+
+                results.rows = results.rows.map(function (itemOfKit) {
+                    return {
+                        ...itemOfKit,
+                        quantity: itemOfKit.quantity * item.quantity
+                    }
+                })
+
+                const itemsOfKit = results.rows
+
+                for (itemOfKit of itemsOfKit) {
+                    for (itemOfPack of itemsOfPack) {
+                        if (itemOfPack.item_id == itemOfKit.item_id) {
+                            itemOfPack.quantity = itemOfPack.quantity + itemOfKit.quantity
+                        } else if (itemOfPack.item_id != itemOfKit.item_id) {
+                            preItemsOfPack.push(itemOfKit)
+                        }
+                    }
+                }
+
+                for (item of preItemsOfPack) {
+                    itemsOfPack.push(item)
+                }
+
+            }
+        }
+
+        itemsOfOrder = itemsOfPack
+
+        for (item of itemsOfOrder) {
+            results = await Order.getItemInStock(item.item_id)
+            const stockItem = results.rows[0]
+            const updatedItem = {
+                ...stockItem,
+                quantity: stockItem.quantity - item.quantity
             }
 
-            Order.updateStatusOfOrder('Pronto', req.body.id, function () {
-                Order.updateFinishDateOfOrder(req.body.id, function () {
-                    return res.redirect('/orders')
-                })
+            await Order.updateItemQuantityInStock(updatedItem.quantity, updatedItem.item_id)
+        }
+
+
+
+        Order.updateStatusOfOrder('Pronto', req.body.order_id, function () {
+            Order.updateFinishDateOfOrder(req.body.order_id, function () {
+                return res.redirect('/packs')
             })
         })
     }

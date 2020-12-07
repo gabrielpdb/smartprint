@@ -80,6 +80,7 @@ routes.get('/ordersItems/:id/edit', orders.editItem)
 routes.post('/ordersItems', orders.postItem)
 routes.put('/ordersItems', orders.putItem)
 routes.delete('/ordersItems', orders.deleteItem)
+routes.post('/orders/createPack', orders.createPack)
 routes.put('/ordersStock', orders.orderFinished)
 
 
