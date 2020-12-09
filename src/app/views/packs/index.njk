@@ -11,7 +11,6 @@
         <table width="100%">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Descrição do pacote</th>
                     <th>Data inicial</th>
                     <th>Data final</th>
@@ -23,9 +22,6 @@
             <tbody>
                 {% for pack in packs %}
                     <tr>
-                        <td>
-                            {{pack.id}}
-                        </td>
                         <td>
                             {{pack.description}}
                         </td>

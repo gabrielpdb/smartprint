@@ -8,7 +8,7 @@ const stock = require('./app/controllers/stock')
 const packs = require('./app/controllers/packs')
 
 routes.get('/', function (req, res) {
-    return res.redirect('/items')
+    return res.redirect('/orders')
 })
 
 /* ITEMS */

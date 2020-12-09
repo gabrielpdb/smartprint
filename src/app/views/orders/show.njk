@@ -3,7 +3,7 @@
 {% block content %}
     <div class="card .kits-index-container">
         <div class="card-header">
-            <h2>{{order.id}}</h2>
+            <h2>Pedido N° {{order.id}}</h2>
             <div class="buttons">
                 {% if order.status != "Pronto" %}
                     <a href="/orders/{{order.id}}/createItem" class="button">Novo item</a>
