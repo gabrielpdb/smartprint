@@ -133,16 +133,16 @@ a.edit-button {
 /* CONTAINERS */
 
 .index-container {
-    width: 70vw;
+    width: 90vw;
     max-height: none;
 }
 
 .show-edit-create-container {
-    width: 40vw;
+    width: 50vw;
 }
 
 .kits-index-container {
-    width: 60vw;
+    width: 70vw;
 }
 
 /* TABLE */

@@ -7,6 +7,7 @@ module.exports = {
             SELECT stock.*, items.description 
             FROM stock
             JOIN items ON stock.item_id = items.id
+            ORDER BY items.description ASC
         `, function (err, results) {
             if (err) throw `Database Error! ${err}`
 
@@ -15,9 +16,10 @@ module.exports = {
     },
     find(id, callback) {
         db.query(`
-            SELECT *
+            SELECT stock.*, items.description
             FROM stock
-            WHERE id = $1
+            JOIN items ON items.id = stock.item_id
+            WHERE stock.id = $1
         `, [id], function (err, results) {
             if (err) throw `Database Error! ${err}`
 
@@ -42,6 +44,8 @@ module.exports = {
             data.quantity,
             data.id
         ]
+
+        console.log(data)
 
         db.query(query, values, function (err, results) {
             if (err) throw `Database Error! ${err}`

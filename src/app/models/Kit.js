@@ -82,6 +82,7 @@ module.exports = {
             FROM items
             JOIN kit_items ON items.id = kit_items.item_id
             WHERE kit_items.kit_id = $1
+            ORDER BY items.description ASC
         `, [id], function (err, results) {
             if (err) throw `Database Error! ${err}`
 

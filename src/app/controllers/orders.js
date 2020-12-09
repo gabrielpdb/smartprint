@@ -179,10 +179,13 @@ module.exports = {
         for (item of itemsOfPack) {
             if (item.quantity > 0) {
                 results = await Pack.createItemOfPackAA(item)
+                
+                console.log('item of pack')
+                console.log(item)
             }
         }
 
-        Pack.findPack(pack_id.id, function (pack) {
+        /* Pack.findPack(pack_id.id, function (pack) {
             if (!pack) return res.send('Pack not found!')
 
             Pack.findItemsOfPack(pack_id.id, function (items) {
@@ -191,7 +194,7 @@ module.exports = {
                 return res.redirect(`/packs/${pack_id.id}`)
 
             })
-        })
+        }) */
     },
     async orderFinished(req, res) {
         let itemsOfPack = []
