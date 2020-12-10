@@ -248,5 +248,12 @@ module.exports = {
 
             callback()
         })
+    },
+    getPacksInProduction() {
+        return db.query(`
+            SELECT *
+            FROM packs
+            WHERE status LIKE('Em produção')
+        `, )
     }
 }

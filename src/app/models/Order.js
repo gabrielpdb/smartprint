@@ -200,5 +200,12 @@ module.exports = {
 
             callback()
         })
+    },
+    getOrdersInProduction() {
+        return db.query(`
+            SELECT *
+            FROM orders
+            WHERE status LIKE('Em produção')
+        `, )
     }
 }

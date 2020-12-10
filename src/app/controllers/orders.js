@@ -4,7 +4,58 @@ const Client = require('../models/Client')
 const Stock = require('../models/Stock')
 const { date } = require('../../lib/utils')
 const Pack = require('../models/Pack')
-const packs = require('./packs')
+const { createPack } = require('../models/Pack')
+
+async function getItemsOfOrder(id) {
+    let itemsOfPack = []
+    let preItemsOfPack = []
+    let results = await Order.findItemsOfOrderAA(id)
+    let itemsOfOrder = results.rows
+
+
+    for (item of itemsOfOrder) {
+        if (!item.kit) {
+            itemsOfPack.push(item)
+        }
+    }
+
+    for (item of itemsOfOrder) {
+        if (item.kit) {
+            results = await Kit.findItemsKitAA(item.item_id)
+
+            results.rows = results.rows.map(function (itemOfKit) {
+                return {
+                    ...itemOfKit,
+                    quantity: itemOfKit.quantity * item.quantity
+                }
+            })
+
+            const itemsOfKit = results.rows
+
+            for (itemOfKit of itemsOfKit) {
+                if (itemsOfPack.length != 0) {
+                    for (itemOfPack of itemsOfPack) {
+                        if (itemOfPack.item_id == itemOfKit.item_id) {
+                            itemOfPack.quantity = itemOfPack.quantity + itemOfKit.quantity
+                        } else {
+                            preItemsOfPack.push(itemOfKit)
+                        }
+                    }
+                } else {
+                    preItemsOfPack.push(itemOfKit)
+                }
+
+            }
+
+            for (item of preItemsOfPack) {
+                itemsOfPack.push(item)
+
+            }
+        }
+    }
+
+    return itemsOfPack
+}
 
 module.exports = {
     index(req, res) {
@@ -117,125 +168,99 @@ module.exports = {
         })
     },
     async createPack(req, res) {
-        let itemsOfPack = []
-        let preItemsOfPack = []
-        let results = await Order.findItemsOfOrderAA(req.body.order_id)
-        let itemsOfOrder = results.rows
+        let results
 
+        // Aqui eu consigo todos os itens do pedido, sendo partes de kits ou não
+        results = await getItemsOfOrder(req.body.order_id)
+        const itemsOfOrder = results
 
-        for (item of itemsOfOrder) {
-            if (!item.kit) {
-                itemsOfPack.push(item)
-            } else {
-                results = await Kit.findItemsKitAA(item.item_id)
+        // Para cada item
+        for (itemOfOrder of itemsOfOrder) {
+            let quantityOfItem
 
-                results.rows = results.rows.map(function (itemOfKit) {
-                    return {
-                        ...itemOfKit,
-                        quantity: itemOfKit.quantity * item.quantity
+            // Somar o estoque com todas as vezes que estiver em um pacote
+
+            // Pegar a quantidade daquele item disponível no estoque
+            results = await Stock.findItemByItemId(item.item_id)
+            let itemInStock = results.rows[0]
+            quantityOfItem = itemInStock.quantity
+
+            // Pegar todos os pacotes em produção
+            results = await Pack.getPacksInProduction()
+            let packsInProduction = results.rows
+
+            // Para cada pacote, verificar se há o item
+            // Se houver, somar a quantidade
+            for (pack of packsInProduction) {
+                results = await Pack.findItemsOfPackAA(pack.id)
+                const itemsOfPack = results.rows
+
+                for (itemOfPack of itemsOfPack) {
+                    if (itemOfPack.item_id == item.item_id) {
+                        quantityOfItem += itemOfPack.quantity
                     }
-                })
+                }
+            }
+            // Subtrair de todas as vezes que estiver em um pedido
 
-                const itemsOfKit = results.rows
+            // Pegar todos os pedidos em producão
+            results = await Order.getOrdersInProduction()
+            let ordersInProduction = results.rows
 
-                for (itemOfKit of itemsOfKit) {
-                    for (itemOfPack of itemsOfPack) {
-                        if (itemOfPack.item_id == itemOfKit.item_id) {
-                            itemOfPack.quantity = itemOfPack.quantity + itemOfKit.quantity
-                        } else if (itemOfPack.item_id != itemOfKit.item_id) {
-                            preItemsOfPack.push(itemOfKit)
+            // Para cada pedido, verificar se há o item
+            // Se houver, diminuir a quantidade
+            if (ordersInProduction.length != 0) {
+                for (orderInProduction of ordersInProduction) {
+                    if (orderInProduction.id != req.body.order_id) {
+                        let itemsOfOrderInProduction = await getItemsOfOrder(orderInProduction.id)
+                        for (itemOfOrderInProduction of itemsOfOrderInProduction) {
+                            if (itemOfOrderInProduction.item_id == item.item_id) {
+                                quantityOfItem -= itemOfOrderInProduction.quantity
+                            }
                         }
                     }
                 }
-
-                for (item of preItemsOfPack) {
-                    itemsOfPack.push(item)
-                }
-
             }
+
+            itemOfOrder.quantity -= quantityOfItem
         }
-
-        itemsOfOrder = itemsOfPack
-
-        // Até aqui eu tenho todos os itens necessários do pedido
-
-        for (item of itemsOfPack) {
-            results = await Stock.findItemByItemId(item.item_id)
-
-            item.quantity = item.quantity - results.rows[0].quantity
-        }
-
-        // Aqui eu descontei o que tinha no estoque
 
         results = await Pack.createPackAA(`Pacote do pedido n° ${req.body.order_id}`)
         const pack_id = results.rows[0]
-        itemsOfPack = itemsOfPack.map(function (item) {
+        let newItemsOfOrder = itemsOfOrder
+
+        newItemsOfOrder = newItemsOfOrder.map(function (item) {
             return {
                 ...item,
                 pack_id: pack_id.id
             }
         })
 
-        for (item of itemsOfPack) {
+        for (item of newItemsOfOrder) {
             if (item.quantity > 0) {
                 results = await Pack.createItemOfPackAA(item)
-                
-                console.log('item of pack')
-                console.log(item)
             }
         }
 
-        /* Pack.findPack(pack_id.id, function (pack) {
+        Pack.findPack(pack_id.id, function (pack) {
             if (!pack) return res.send('Pack not found!')
 
             Pack.findItemsOfPack(pack_id.id, function (items) {
                 if (!items) return res.send('Items not found!')
 
-                return res.redirect(`/packs/${pack_id.id}`)
-
-            })
-        }) */
-    },
-    async orderFinished(req, res) {
-        let itemsOfPack = []
-        let preItemsOfPack = []
-        let results = await Order.findItemsOfOrderAA(req.body.order_id)
-        let itemsOfOrder = results.rows
-
-
-        for (item of itemsOfOrder) {
-            if (!item.kit) {
-                itemsOfPack.push(item)
-            } else {
-                results = await Kit.findItemsKitAA(item.item_id)
-
-                results.rows = results.rows.map(function (itemOfKit) {
-                    return {
-                        ...itemOfKit,
-                        quantity: itemOfKit.quantity * item.quantity
-                    }
+                Pack.updateStatusOfPack("Em produção", pack_id.id, function () {
+                    return res.redirect(`/packs/${pack_id.id}`)
                 })
 
-                const itemsOfKit = results.rows
+            })
+        })
+    },
+    async orderFinished(req, res) {
+        let results
 
-                for (itemOfKit of itemsOfKit) {
-                    for (itemOfPack of itemsOfPack) {
-                        if (itemOfPack.item_id == itemOfKit.item_id) {
-                            itemOfPack.quantity = itemOfPack.quantity + itemOfKit.quantity
-                        } else if (itemOfPack.item_id != itemOfKit.item_id) {
-                            preItemsOfPack.push(itemOfKit)
-                        }
-                    }
-                }
-
-                for (item of preItemsOfPack) {
-                    itemsOfPack.push(item)
-                }
-
-            }
-        }
-
-        itemsOfOrder = itemsOfPack
+        // Aqui eu consigo todos os itens do pedido, sendo partes de kits ou não
+        results = await getItemsOfOrder(req.body.order_id)
+        const itemsOfOrder = results
 
         for (item of itemsOfOrder) {
             results = await Order.getItemInStock(item.item_id)
@@ -248,11 +273,9 @@ module.exports = {
             await Order.updateItemQuantityInStock(updatedItem.quantity, updatedItem.item_id)
         }
 
-
-
         Order.updateStatusOfOrder('Pronto', req.body.order_id, function () {
             Order.updateFinishDateOfOrder(req.body.order_id, function () {
-                return res.redirect('/packs')
+                return res.redirect('/orders')
             })
         })
     }
