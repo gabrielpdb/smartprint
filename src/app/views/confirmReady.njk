@@ -2,7 +2,7 @@
     const formReady = document.querySelector("#form-ready")
 
     formReady.addEventListener('submit', function (event) {
-        const confirmation = confirm('Deseja mesmo inserir o pacote no estoque?')
+        const confirmation = confirm('Você tem certeza dessa ação?')
         if (!confirmation) {
             event.preventDefault()
         }
