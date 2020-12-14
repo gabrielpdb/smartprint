@@ -158,7 +158,7 @@ module.exports = {
         req.body.quantity = Number(req.body.quantity)
         req.body.id = Number(req.body.id)
 
-        Orders.updateItemOfOrder(req.body, function (order_id) {
+        Order.updateItemOfOrder(req.body, function (order_id) {
             return res.redirect(`/orders/${order_id.order_id}`)
         })
     },
@@ -181,7 +181,7 @@ module.exports = {
             // Somar o estoque com todas as vezes que estiver em um pacote
 
             // Pegar a quantidade daquele item disponível no estoque
-            results = await Stock.findItemByItemId(item.item_id)
+            results = await Stock.findItemByItemId(itemOfOrder.item_id)
             let itemInStock = results.rows[0]
             quantityOfItem = itemInStock.quantity
 
@@ -196,11 +196,12 @@ module.exports = {
                 const itemsOfPack = results.rows
 
                 for (itemOfPack of itemsOfPack) {
-                    if (itemOfPack.item_id == item.item_id) {
+                    if (itemOfPack.item_id == itemOfOrder.item_id) {
                         quantityOfItem += itemOfPack.quantity
                     }
                 }
             }
+
             // Subtrair de todas as vezes que estiver em um pedido
 
             // Pegar todos os pedidos em producão
@@ -214,7 +215,7 @@ module.exports = {
                     if (orderInProduction.id != req.body.order_id) {
                         let itemsOfOrderInProduction = await getItemsOfOrder(orderInProduction.id)
                         for (itemOfOrderInProduction of itemsOfOrderInProduction) {
-                            if (itemOfOrderInProduction.item_id == item.item_id) {
+                            if (itemOfOrderInProduction.item_id == itemOfOrder.item_id) {
                                 quantityOfItem -= itemOfOrderInProduction.quantity
                             }
                         }
@@ -222,7 +223,10 @@ module.exports = {
                 }
             }
 
-            itemOfOrder.quantity -= quantityOfItem
+            if(quantityOfItem > 0 ){
+                itemOfOrder.quantity -= quantityOfItem
+            }
+
         }
 
         results = await Pack.createPackAA(`Pacote do pedido n° ${req.body.order_id}`)

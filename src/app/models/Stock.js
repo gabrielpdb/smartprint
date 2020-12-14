@@ -45,8 +45,6 @@ module.exports = {
             data.id
         ]
 
-        console.log(data)
-
         db.query(query, values, function (err, results) {
             if (err) throw `Database Error! ${err}`
 
