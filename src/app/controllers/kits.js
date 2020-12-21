@@ -26,7 +26,7 @@ module.exports = {
             return res.send('Please, insert a Kit Description!')
         }
 
-        Kit.create(req.body, function (kit) {
+        Kit.create(req.body.description, function (kit) {
             return res.redirect(`/kits/${kit.id}`)
         })
     },
@@ -124,5 +124,30 @@ module.exports = {
         Kit.deleteItemOfKit(req.body.id, function (kit_id) {
             return res.redirect(`/kits/${kit_id.kit_id}`)
         })
+    },
+    async duplicate(req, res) {
+        let results = await Kit.findItemsKitAA(req.params.id)
+        const itemsOfKit = results.rows
+
+        results = await Kit.findKitDescription(req.params.id)
+        const kitDescription = results.rows[0]
+
+        results = await Kit.createAA(`Cópia de ${kitDescription.description}`)
+        const newKitID = results.rows[0].id
+
+        for (item of itemsOfKit) {
+
+            item.kit_id = newKitID
+
+            results = await Kit.createItemsAA(item)
+        }
+
+        return res.redirect(`/kits/${newKitID.id}`)
+
+
+        console.log(itemsOfKit)
+        console.log(kitDescription)
+
+
     }
 }

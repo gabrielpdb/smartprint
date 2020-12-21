@@ -25,7 +25,7 @@ module.exports = {
             callback(results.rows)
         })
     },
-    create(data, callback) {
+    create(description, callback) {
         const query = `
             INSERT INTO items (
                 description,
@@ -34,7 +34,7 @@ module.exports = {
             RETURNING id
         `
         const values = [
-            data.description,
+            description,
             true
         ]
 
@@ -44,6 +44,21 @@ module.exports = {
             callback(results.rows[0])
         })
 
+    },
+    createAA(description) {
+        const query = `
+            INSERT INTO items (
+                description,
+                kit
+            ) VALUES ($1, $2)
+            RETURNING id
+        `
+        const values = [
+            description,
+            true
+        ]
+
+        return db.query(query, values)
     },
     createItems(data, callback) {
         const query = `
@@ -65,6 +80,20 @@ module.exports = {
             callback()
         })
     },
+    createItemsAA(data) {
+        return db.query(`
+            INSERT INTO kit_items (
+                quantity,
+                item_id,
+                kit_id
+            ) VALUES ($1, $2, $3)
+            RETURNING ID
+        `, [
+            data.quantity,
+            data.item_id,
+            data.kit_id
+        ])
+    },
     findKit(id, callback) {
         db.query(`
             SELECT *
@@ -75,6 +104,13 @@ module.exports = {
 
             callback(results.rows[0])
         })
+    },
+    findKitDescription(id) {
+        return db.query(`
+            SELECT description
+            FROM items
+            WHERE kit = true AND id = $1
+        `, [id])
     },
     findItemsKit(id, callback) {
         db.query(`

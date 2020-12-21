@@ -5,5 +5,5 @@ module.exports = new Pool({
     password: "postgres",
     host: 'localhost',
     port: 5433,
-    database: 'smartprint'
+    database: 'walcolor_smartprint'
 })
