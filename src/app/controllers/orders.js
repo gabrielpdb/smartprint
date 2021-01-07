@@ -4,21 +4,21 @@ const Client = require('../models/Client')
 const Stock = require('../models/Stock')
 const { date } = require('../../lib/utils')
 const Pack = require('../models/Pack')
-const { createPack } = require('../models/Pack')
 
 async function getItemsOfOrder(id) {
     let itemsOfPack = []
-    let preItemsOfPack = []
     let results = await Order.findItemsOfOrderAA(id)
     let itemsOfOrder = results.rows
+    let inItemsOfPack = false
 
-
+    // Se o item não é kit, já vai direto para os items do pacote
     for (item of itemsOfOrder) {
         if (!item.kit) {
             itemsOfPack.push(item)
         }
     }
 
+    // Aqui eu trato tudo que for kit
     for (item of itemsOfOrder) {
         if (item.kit) {
             results = await Kit.findItemsKitAA(item.item_id)
@@ -36,20 +36,25 @@ async function getItemsOfOrder(id) {
                 if (itemsOfPack.length != 0) {
                     for (itemOfPack of itemsOfPack) {
                         if (itemOfPack.item_id == itemOfKit.item_id) {
-                            itemOfPack.quantity = itemOfPack.quantity + itemOfKit.quantity
+                            inItemsOfPack = true
+                            break
                         } else {
-                            preItemsOfPack.push(itemOfKit)
+                            inItemsOfPack = false
+                        }
+                    }
+
+                    if (!inItemsOfPack) {
+                        itemsOfPack.push(itemOfKit)
+                    } else {
+                        for (itemOfPack of itemsOfPack) {
+                            if (itemOfPack.item_id == itemOfKit.item_id) {
+                                itemOfPack.quantity = itemOfPack.quantity + itemOfKit.quantity
+                            }
                         }
                     }
                 } else {
-                    preItemsOfPack.push(itemOfKit)
+                    itemsOfPack.push(itemOfKit)
                 }
-
-            }
-
-            for (item of preItemsOfPack) {
-                itemsOfPack.push(item)
-
             }
         }
     }
@@ -223,7 +228,7 @@ module.exports = {
                 }
             }
 
-            if(quantityOfItem > 0 ){
+            if (quantityOfItem > 0) {
                 itemOfOrder.quantity -= quantityOfItem
             }
 

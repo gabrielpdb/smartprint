@@ -7,7 +7,7 @@ module.exports = {
             SELECT stock.*, items.description 
             FROM stock
             JOIN items ON stock.item_id = items.id
-            ORDER BY items.description ASC
+            ORDER BY stock.quantity DESC
         `, function (err, results) {
             if (err) throw `Database Error! ${err}`
 

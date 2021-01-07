@@ -8,6 +8,7 @@ module.exports = {
             SELECT orders.*, clients.name AS client_name 
             FROM orders
             JOIN clients ON orders.client_id = clients.id
+            ORDER BY orders.start_date DESC
         `, function (err, results) {
             if (err) throw `Database Error! ${err}`
 

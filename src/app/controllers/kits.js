@@ -142,11 +142,7 @@ module.exports = {
             results = await Kit.createItemsAA(item)
         }
 
-        return res.redirect(`/kits/${newKitID.id}`)
-
-
-        console.log(itemsOfKit)
-        console.log(kitDescription)
+        return res.redirect(`/kits/${newKitID}`)
 
 
     }
