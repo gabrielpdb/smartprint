@@ -8,6 +8,7 @@
     "browsersync": "browser-sync start --proxy http://localhost:4000 --files 'public, src/app/views' --no-inject-changes"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "intl": "^1.2.5",
     "method-override": "^3.0.0",

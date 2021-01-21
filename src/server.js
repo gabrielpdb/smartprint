@@ -6,9 +6,14 @@ const nunjucks = require('nunjucks')
 const routes = require('./routes')
 // Chamar o method override
 const methodOverride = require('method-override')
+// Chamar o Cors
+const cors = require('cors')
 
 // Criar o servidor
 const server = express()
+
+// Faz o server usar o cors
+server.use(cors())
 
 // Faz funcionar o req.body
 server.use(express.urlencoded({ extended: true }))
