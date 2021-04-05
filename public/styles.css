@@ -200,6 +200,23 @@ thead tr th:nth-child(3), thead tr th:nth-child(4), tbody tr td:nth-child(3), tb
     margin-top: 20px;
 }
 
+.button-black {
+    color: black;
+    align-items: center;
+    text-align: center;
+}
+
+i.button-done {
+    background-color: white;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.item-done {
+    background-color: #5de970;
+}
+
 /* FORM */
 
 input, select {

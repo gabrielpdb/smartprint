@@ -287,5 +287,15 @@ module.exports = {
                 return res.redirect('/orders')
             })
         })
+    },
+    async showItemsOfOrder(req, res) {
+        let results
+
+        // Aqui eu consigo todos os itens do pedido, sendo partes de kits ou não
+        results = await getItemsOfOrder(req.params.id)
+        const itemsOfOrder = results
+        const orderId = Number(req.params.id)
+
+        return res.render('orders/showItemsOfKit', {itemsOfOrder, orderId})
     }
 }

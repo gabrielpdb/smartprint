@@ -1,0 +1,37 @@
+{% extends "layout.njk" %}
+{% block content %}
+    <div class="card index-container">
+        <div class="card-header">
+            <h2>Pedido N°
+                {{ orderId }}
+                - Itens</h2>
+            <div class="buttons">
+                <a href="/orders/{{orderId}}" class="button">Voltar</a>
+            </div>
+        </div>
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantidade</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itemsOfOrder %}
+                    <tr class="itemofOrder" id="{{ item.id }}">
+                        <td>
+                            {{ item.description }}
+                        </td>
+                        <td>
+                            {{ item.quantity }}
+                        </td>
+                        <td>
+                            <i class="material-icons button-done" id="{{ item.id }}">done</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
