@@ -1,7 +1,7 @@
 {% extends "layout.njk" %}
 
 {% block content %}
-    <div class="card .kits-index-container">
+    <div class="card index-container">
         <div class="card-header">
             <h2>Pedido N° {{order.id}}</h2>
             <div class="buttons">
@@ -15,6 +15,7 @@
                         <input type="hidden" name="order_id" value="{{ order.id }}">
                         <button type="submit" class="button">Pronto</button>
                     </form>
+                    
                 {% endif %}
                 <form action="/orders?_method=DELETE" method="post" id="form-delete">
                     <input type="hidden" name="id" value="{{ order.id }}">
