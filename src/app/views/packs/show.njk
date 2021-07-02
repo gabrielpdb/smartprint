@@ -26,11 +26,12 @@
                     <th>Item</th>
                     <th>Quantidade</th>
                     <th>Ação</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in items %}
-                    <tr>
+                    <tr  class="itemofOrder" id="{{ item.id }}">
                         <td>
                             {{item.id}}
                         </td>
@@ -46,6 +47,9 @@
                             {% else %}
                                 <a href="#" class="button disable-button">Editar</a>
                             {% endif %}
+                        </td>
+                        <td>
+                            <i class="material-icons button-done" id="{{ item.id }}">done</i>
                         </td>
                     </tr>
                 {% endfor %}

@@ -15,7 +15,7 @@
                         <input type="hidden" name="order_id" value="{{ order.id }}">
                         <button type="submit" class="button">Pronto</button>
                     </form>
-                    
+
                 {% endif %}
                 <form action="/orders?_method=DELETE" method="post" id="form-delete">
                     <input type="hidden" name="id" value="{{ order.id }}">
